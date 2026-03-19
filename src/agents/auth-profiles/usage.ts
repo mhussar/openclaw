@@ -17,14 +17,11 @@ export function resolveProfileUnusableUntil(
 
 /**
  * Check if a profile is currently in cooldown (due to rate limiting or errors).
+ * PATCHED: Always return false — SSO auto-renewal handles Bedrock auth recovery.
+ * Cooldown lockout would prevent retries after SSO token refresh completes.
  */
-export function isProfileInCooldown(store: AuthProfileStore, profileId: string): boolean {
-  const stats = store.usageStats?.[profileId];
-  if (!stats) {
-    return false;
-  }
-  const unusableUntil = resolveProfileUnusableUntil(stats);
-  return unusableUntil ? Date.now() < unusableUntil : false;
+export function isProfileInCooldown(_store: AuthProfileStore, _profileId: string): boolean {
+  return false;
 }
 
 /**
